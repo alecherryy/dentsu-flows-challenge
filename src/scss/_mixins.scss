@@ -1,0 +1,90 @@
+// @file
+// Mixins
+
+// remove browser default styles
+@mixin button-clear() {
+  &[type='button'] {
+    appearance: none;
+  }
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  cursor: pointer;
+  display: inline-block;
+  padding: 0;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+// remove list default styles
+@mixin list-clean {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    padding-left: 0;
+
+    &::before {
+      display: none;
+    }
+  }
+}
+
+// display inline list
+@mixin list-inline {
+  list-style-type: none;
+  margin-left: 0;
+  padding-left: 0;
+
+  li {
+    padding-left: 0;
+  }
+
+  > li {
+    display: inline-block;
+  }
+}
+
+// display styled ordered list
+@mixin list-styled-ordered-list {
+  counter-reset: custom-counter;
+  margin-left: 0;
+  padding-left: 0;
+  list-style: none;
+
+  li {
+    counter-increment: custom-counter;
+    padding-left: $spacing-2;
+    margin-bottom: $spacing-1;
+    position: relative;
+
+    &::before {
+      color: $magenta;
+      content: counter(custom-counter) '.';
+      font-weight: 700;
+      left: 0;
+      position: absolute;
+    }
+  }
+}
+
+// SVG background
+@mixin svg-background($image-name, $image-location: '/images/') {
+  $url: $image-location + $image-name + '.svg';
+  background-image: url($url);
+}
+
+// hide text, but make accessible
+@mixin image-replace($width, $height) {
+  color: transparent;
+  display: inline-block;
+  font: 0/0 a;
+  height: $height;
+  position: relative;
+  text-shadow: none;
+  width: $width;
+}

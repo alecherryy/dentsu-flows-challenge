@@ -1,0 +1,22 @@
+// @file
+// Colors
+
+$black: #212121;
+$white: #ffffff;
+$gray-1: #ececec;
+$gray-2: #f6f6f6;
+$gray-3: #ccc;
+$gray-4: #666;
+$gray-5: #333;
+
+// Brand colors
+$blue-light: #97b0d0;
+$blue: #040030;
+$blue-dark: #02001d;
+$yellow: #fddb3a;
+$orange: #ffaa71;
+$magenta: #e94560;
+
+// Gradients
+$gradient-blue: linear-gradient(to right, $blue-dark, $blue);
+$gradient-yom: linear-gradient(45deg, $magenta, $orange, $yellow);
