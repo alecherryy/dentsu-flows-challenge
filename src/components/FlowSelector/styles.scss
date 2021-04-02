@@ -1,0 +1,28 @@
+@import '../../scss/variables.scss';
+
+// @file
+// Flow selector
+
+.flow-selector__label {
+  @include label-style();
+
+  margin-right: $spacing-2;
+}
+
+.flow-selector__select {
+  @include svg-background(icon-arrow-down);
+
+  background-color: transparent;
+  background-position: center right 5px;
+  background-repeat: no-repeat;
+  background-size: 13px 7px;
+  appearance: none;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  border-image: $gradient-yom 1 round;
+  box-shadow: none;
+  color: $white;
+  font-family: $base-font-family;
+  font-size: $base-font-size;
+  padding: $spacing-1 $spacing-6 $spacing-1 $spacing-1;
+}

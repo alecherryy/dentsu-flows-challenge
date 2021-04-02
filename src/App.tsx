@@ -1,9 +1,10 @@
 import './App.scss';
+import { FlowSelector } from './components/FlowSelector/FlowSelector';
 
 function App() {
   return (
     <div className="App">
-      <p>Hello, world.</p>
+      <FlowSelector />
     </div>
   );
 }
