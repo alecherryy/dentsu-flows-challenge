@@ -13,6 +13,7 @@ import { API } from '../../services/FlowService';
  */
 interface Props {
   handleChange?: () => void,
+  selectRef: any,
 }
 
 export const FlowSelector: React.FC<Props> = (props) => {
@@ -34,7 +35,8 @@ export const FlowSelector: React.FC<Props> = (props) => {
   return (
     <div className="flow-selector">
       <label className="flow-selector__label">Choose a flow:</label>
-      <select className="flow-selector__select" onChange={props.handleChange}>
+      <select className="flow-selector__select" onChange={props.handleChange}
+        ref={props.selectRef}>
         {flows.map((item, key) => (
           <option key={key} value={item.id}>
             {item.name}

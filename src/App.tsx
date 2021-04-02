@@ -1,10 +1,10 @@
 import './App.scss';
-import { FlowSelector } from './components/FlowSelector/FlowSelector';
+import { DurationInfo } from './components/DurationInfo/DurationInfo';
 
 function App() {
   return (
     <div className="App">
-      <FlowSelector />
+      <DurationInfo />
     </div>
   );
 }
