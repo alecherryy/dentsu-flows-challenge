@@ -1,10 +1,10 @@
 import './App.scss';
-import { FlowSelector } from './components/FlowSelector/FlowSelector';
+import { FlowChart } from './components/FlowChart/FlowChart';
 
 function App() {
   return (
     <div className="App">
-      <FlowSelector />
+      <FlowChart />
     </div>
   );
 }

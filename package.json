@@ -41,7 +41,10 @@
     ]
   },
   "devDependencies": {
+    "@types/dagre": "^0.7.44",
+    "dagre": "^0.8.5",
     "node-sass": "^5.0.0",
+    "react-flow-renderer": "^9.4.2",
     "react-router-dom": "^5.2.0"
   }
 }
