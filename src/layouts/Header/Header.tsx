@@ -19,8 +19,8 @@ import { Constrain } from '../Constrain/Constrain';
  */
 
 interface Props {
-  leftContent: JSX.Element,
-  rightContent: JSX.Element
+  leftContent?: JSX.Element,
+  rightContent?: JSX.Element
 }
 export const Header: React.FC<Props> = (props) => {
   return (

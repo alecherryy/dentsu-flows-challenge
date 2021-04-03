@@ -4,14 +4,12 @@
 // Header
 
 .header {
-  background-color: $white;
-  border-bottom: solid 1px $gray-1;
   padding: $spacing-2 0;
   left: 0;
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 10;
+  z-index: 4;
 
 }
 

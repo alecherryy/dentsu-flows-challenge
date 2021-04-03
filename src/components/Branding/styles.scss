@@ -1,0 +1,16 @@
+@import '../../scss/variables.scss';
+
+// @file
+// Branding
+
+.branding {
+  max-width: rem(120px);
+
+  @include bp-tablet {
+    max-width: rem(160px);
+  }
+
+  @include bp-tablet-lg {
+    max-width: 100%;
+  }
+}

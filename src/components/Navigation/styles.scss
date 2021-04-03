@@ -1,0 +1,83 @@
+@import '../../scss/variables.scss';
+
+// @file
+// Navigation
+
+.nav-menu {
+  align-items: center;
+  display: flex;
+  font-size: $font-size-sm;
+  letter-spacing: 1px;
+}
+
+.nav-menu__menu {
+  display: none;
+
+  @include bp-tablet {
+    @include list-inline();
+
+    display: inline-block;
+  }
+}
+
+.nav-menu__item {
+  @include bp-tablet {
+    padding-right: $spacing-2;
+  }
+
+  @include bp-tablet-lg {
+    padding-right: $spacing-3;
+  }
+}
+
+.nav-menu__link {
+  color: $white;
+  text-decoration: none;
+
+  &:visited {
+    color: $white;
+  }
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
+}
+
+.nav-menu__link--btn,
+.nav-menu__icon {
+  @include button-clear();
+}
+
+.nav-menu__icon {
+  @include image-replace(40px, 21px);
+  @include svg-background(icon-menu);
+
+  background-repeat: no-repeat;
+  background-size: 40px 21px;
+  margin-right: $spacing-2;
+
+  @include bp-tablet {
+    display: none;
+  }
+}
+
+.nav-menu__link--btn {
+  background-color: $blue-light;
+  border-radius: 50px;
+  color: $blue-dark;
+  font-weight: 700;
+  padding: $spacing-1 $spacing-3;
+  transition: all ease-in 0.4s;
+
+  &:visited {
+    color: $blue-dark;
+  }
+
+  &:hover,
+  &:focus {
+    color: $white;
+    background-color: $magenta;
+    text-decoration: none;
+  }
+}

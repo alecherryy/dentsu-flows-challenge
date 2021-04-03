@@ -1,0 +1,28 @@
+@import '../../scss/variables.scss';
+
+// @file
+// Section
+
+.graphic {
+  display: none;
+
+  @include bp-tablet {
+    display: block;
+    max-width: 320px;
+    position: absolute;
+    top: calc((100% - #{rem(100px)}) / 2);
+  }
+
+  @include bp-desktop {
+    top: calc((100% - #{rem(100px)}) / 2);
+    max-width: 420px;
+  }
+}
+
+.graphic--data {
+  left: 0;
+}
+
+.graphic--flow {
+  right: 0;
+}
