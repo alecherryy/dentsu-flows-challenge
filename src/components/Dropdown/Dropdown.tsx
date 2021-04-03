@@ -7,7 +7,7 @@ import React from 'react';
  *
  * @component
  * @return {object} (
- *   <FlowSelector flows={flows} handleChange={handleChange} />
+ *   <Dropdown flows={flows} handleChange={handleChange} />
  * )
  */
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
   flows: any[] | undefined
 }
 
-export const FlowSelector: React.FC<Props> = (props) => {
+export const Dropdown: React.FC<Props> = (props) => {
   return (
     <div className="flow-selector">
       <label className="flow-selector__label">Choose a flow:</label>

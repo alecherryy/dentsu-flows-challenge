@@ -10,7 +10,7 @@ export const findAllFlows = () => {
 /**
  * FIND PROCESS BY FLOW
  *
- * @param {string} flowId
+ * @param {number} flowId
  */
 export const findFlowById = (flowId) => {
   return fetch(`${URL}/${flowId}`).then(response => response.json());
