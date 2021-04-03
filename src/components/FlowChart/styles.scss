@@ -5,4 +5,8 @@
 
 .flow-chart {
   height: 800px;
+
+  * {
+    transition: none; // disable to avoid flow chart conflicts
+  }
 }
