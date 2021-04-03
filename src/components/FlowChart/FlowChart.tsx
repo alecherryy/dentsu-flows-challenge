@@ -23,7 +23,10 @@ export const FlowChart: React.FC<Props> = (props) => {
   return (
     <div className="flow-chart">
       <ReactFlowProvider>
-        <ReactFlow elements={generateFlow(props.nodes, props.edges)} />
+        <ReactFlow
+          zoomOnScroll={false}
+          elements={generateFlow(props.nodes, props.edges)}
+        />
       </ReactFlowProvider>
     </div>
   );

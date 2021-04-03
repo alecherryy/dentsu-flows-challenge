@@ -1,15 +1,24 @@
 @import '../../scss/variables.scss';
 
 // @file
-// Flow selector
+// Flow dropdown
 
-.flow-selector__label {
+.dropdown {
+  margin: $spacing-1 0 $spacing-3;
+  text-align: center;
+
+  @include bp-tablet {
+    margin-bottom: $spacing-6;
+  }
+}
+
+.dropdown__label {
   @include label-style();
 
   margin-right: $spacing-2;
 }
 
-.flow-selector__select {
+.dropdown__select {
   @include svg-background(icon-arrow-down);
 
   background-color: transparent;
