@@ -19,9 +19,9 @@ interface Props {
 
 export const Dropdown: React.FC<Props> = (props) => {
   return (
-    <div className="flow-selector">
-      <label className="flow-selector__label">Choose a flow:</label>
-      <select className="flow-selector__select" onChange={props.handleChange}>
+    <div className="dropdown">
+      <label className="dropdown__label">Choose a flow:</label>
+      <select className="dropdown__select" onChange={props.handleChange}>
         {props.options && props.options.map((item, key) => (
           <option key={key} value={item.id}>
             {item.name}

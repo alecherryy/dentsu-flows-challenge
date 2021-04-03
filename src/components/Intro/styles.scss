@@ -1,0 +1,19 @@
+@import '../../scss/variables.scss';
+
+// @file
+// Intro
+
+.intro {
+  color: $gray-3;
+  text-align: center;
+  padding: $spacing-3 0 0;
+  position: relative;
+  z-index: 1;
+}
+
+.intro__eyebrow {
+  @include label-style();
+
+  color: $blue-light;
+  margin-bottom: $spacing-2;
+}
