@@ -1,10 +1,10 @@
 import './App.scss';
-import { FlowChart } from './components/FlowChart/FlowChart';
+import { DataOverview } from './components/DataOverview/DataOverview';
 
 function App() {
   return (
     <div className="App">
-      <FlowChart />
+      <DataOverview />
     </div>
   );
 }

@@ -1,69 +1,86 @@
-import './styles.scss';
-
-import React, { useEffect, useState } from 'react';
-import ReactFlow from 'react-flow-renderer';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useCallback } from 'react';
+import ReactFlow, {
+  ReactFlowProvider,
+  addEdge,
+  removeElements,
+  isNode,
+} from 'react-flow-renderer';
 import dagre from 'dagre';
 
-import { API } from '../../services/FlowService';
-import { Dropdown } from '../Dropdown/Dropdown';
-import { UTILS } from '../../utils/utils';
+// import initialElements from './initial-elements';
 
-/**
- * Component for duration info element.
- *
- * @component
- * @return {object} (
- *   <FlowChart handleChange={handleChange} />
- * )
- */
-export const FlowChart: React.FC = () => {
-  const [flows, setFlows] = useState<any[] | undefined>(undefined);
-  const [data, setData] = useState<any[]>([]);
-  const [id, setId] = useState(-1);
+// import './layouting.css';
 
-  useEffect(() => {
-    API.findAllFlows().then(async (data) => {
-      if (id === -1) {
-        setId(data[0].id);
-        setFlows(data);
-      }
+const dagreGraph = new dagre.graphlib.Graph();
+dagreGraph.setDefaultEdgeLabel(() => ({}));
 
-      API.findFlowById(id).then(async (chart) => {
-        const allIds: number[] = [];
-        const allEdges: object[] = [];
-        chart.map((el: any, index: number) => {
-          if (!allIds.includes(el.fromProcessId)) {
-            allIds.push(el.fromProcessId);
-          }
-          if (!allIds.includes(el.toProcessId)) {
-            allIds.push(el.toProcessId);
-          }
+// In order to keep this example simple the node width and height are hardcoded.
+// In a real world app you would use the correct width and height values of
+// const nodes = useStoreState(state => state.nodes) and then node.__rf.width, node.__rf.height
 
-          const edge = UTILS.formatObj(index, el);
-          allEdges.push(edge);
-        })
+interface Props {
+  nodes: object[],
+  edges?: object[]
+}
 
-        const allNodes: object[] = await Promise.all(allIds.map(item => getNode(item)));
-
-        setData(allNodes.concat(allEdges));
-      })
-    });
-  }, [id]);
-
-  const getNode = async (id: number) => {
-    const node = await API.findProcessById(id);
-    const newNode = {
-      id: node.id.toString(),
-      data: { label: node.name },
-      position: { x: 50 + (id * 100), y: 25 + (id * 100) },
-    }
-    return newNode;
-  }
+interface Props {
+  nodes: object[],
+  edges?: object[]
+}
+export const FlowChart: React.FC<Props> = (props) => {
+  // const [elements, setElements] = useState([]);
+  // const onLayout = useCallback(
+  //   (direction) => {
+  //     const layoutedElements = ;
+  //     setElements(layoutedElements);
+  //   },
+  //   [elements]
+  // );
 
   return (
-    <div className="flow-chart">
-      <Dropdown flows={flows} handleChange={(e) => setId(parseInt(e.target.value))} />
-      <ReactFlow elements={data} />
+    <div className="layoutflow">
+      <ReactFlowProvider>
+        <ReactFlow elements={getLayoutedElements(props.nodes, 'LR')} />
+        <div className="controls">
+        </div>
+      </ReactFlowProvider>
     </div>
   );
+};
+
+const nodeWidth = 172;
+const nodeHeight = 36;
+const getLayoutedElements = (elements: any[], direction = 'TB') => {
+  // const isHorizontal = direction === 'LR';
+  dagreGraph.setGraph({ rankdir: direction });
+
+  elements.forEach((el) => {
+    if (isNode(el)) {
+      dagreGraph.setNode(el.id, {
+        id: el.id,
+        width: nodeWidth,
+        height: nodeHeight });
+    }
+  });
+
+  dagre.layout(dagreGraph);
+
+  return elements.map((el) => {
+    if (isNode(el)) {
+      const nodeWithPosition = dagreGraph.node(el.id);
+      // el.targetPosition = isHorizontal ? 'left' : 'top';
+      // el.sourcePosition = isHorizontal ? 'right' : 'bottom';
+
+      // unfortunately we need this little hack to pass a slighltiy different position
+      // to notify react flow about the change. More over we are shifting the dagre node position
+      // (anchor=center center) to the top left so it matches the react flow node anchor point (top left).
+      el.position = {
+        x: nodeWithPosition.x - nodeWidth / 2 + Math.random() / 1000,
+        y: nodeWithPosition.y - nodeHeight / 2,
+      };
+    }
+
+    return el;
+  });
 };
