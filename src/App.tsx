@@ -6,6 +6,8 @@ import { Branding } from './components/Branding/Branding';
 import { Header } from './layouts/Header/Header';
 import { Homepage } from './pages/Homepage/Homepage';
 import { Navigation } from './components/Navigation/Navigation';
+import { Footer } from './layouts/Footer/Footer';
+import { Constrain } from './layouts/Constrain/Constrain';
 
 
 function App() {
@@ -21,6 +23,15 @@ function App() {
           </Switch>
         </Main>
       </Router>
+      <Constrain modifierClasses="constrain--wide">
+        <Footer>
+          View this project on <a
+            href="https://github.com/alecherryy/dentsu-flows-challenge"
+            target="_blank"
+            rel="noreferrer"
+            >GitHub</a>.
+        </Footer>
+      </Constrain>
     </div>
   );
 }

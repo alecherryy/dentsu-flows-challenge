@@ -13,10 +13,10 @@ import React from 'react';
  * )
  */
 
-export const Footer: React.FC = (children) => {
+export const Footer: React.FC = (props) => {
   return (
     <div className="footer">
-      {children}
+      {props.children}
     </div>
   );
 };
