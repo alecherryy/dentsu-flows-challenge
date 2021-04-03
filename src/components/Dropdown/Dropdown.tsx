@@ -6,13 +6,15 @@ import React from 'react';
  * Component for flow selector element.
  *
  * @component
+ * @param {function} handleChange on the component.
+ * @param {function} options of the component.
  * @return {object} (
- *   <Dropdown flows={flows} handleChange={handleChange} />
+ *   <Dropdown options={options} handleChange={handleChange} />
  * )
  */
 interface Props {
   handleChange?: (event: any) => void,
-  flows: any[] | undefined
+  options: any[] | undefined
 }
 
 export const Dropdown: React.FC<Props> = (props) => {
@@ -20,7 +22,7 @@ export const Dropdown: React.FC<Props> = (props) => {
     <div className="flow-selector">
       <label className="flow-selector__label">Choose a flow:</label>
       <select className="flow-selector__select" onChange={props.handleChange}>
-        {props.flows && props.flows.map((item, key) => (
+        {props.options && props.options.map((item, key) => (
           <option key={key} value={item.id}>
             {item.name}
           </option>

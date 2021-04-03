@@ -1,13 +1,11 @@
 import './styles.scss';
 
 import React, { useEffect, useState } from 'react';
-import ReactFlow from 'react-flow-renderer';
-import dagre from 'dagre';
 
 import { API } from '../../services/FlowService';
 import { Dropdown } from '../Dropdown/Dropdown';
 import { UTILS } from '../../utils/utils';
-import { FlowChart } from '../FlowChart/FlowChart2';
+import { FlowChart } from '../FlowChart/FlowChart';
 
 /**
  * Component for duration info element.
@@ -18,30 +16,31 @@ import { FlowChart } from '../FlowChart/FlowChart2';
  * )
  */
 export const DataOverview: React.FC = () => {
-  const [flows, setFlows] = useState<any[] | undefined>(undefined);
+  const [flows, setFlows] = useState<any[]>([]);
+  const [processes, setProcesses] = useState<any[]>([]);
   const [edges, setEdges] = useState<any[]>([]);
-  const [nodes, setNodes] = useState<any[]>([]);
   const [id, setId] = useState(-1);
 
   useEffect(() => {
+    const nodeIDs: number[] = [];
+
     API.findFlowById(id).then(async (chart) => {
-      const allIds: number[] = [];
       const allEdges: object[] = [];
 
       chart.map((el: any, index: number) => {
-        if (!allIds.includes(el.fromProcessId)) {
-          allIds.push(el.fromProcessId);
+        if (!nodeIDs.includes(el.fromProcessId)) {
+          nodeIDs.push(el.fromProcessId);
         }
-        if (!allIds.includes(el.toProcessId)) {
-          allIds.push(el.toProcessId);
+        if (!nodeIDs.includes(el.toProcessId)) {
+          nodeIDs.push(el.toProcessId);
         }
 
         const edge = UTILS.formatObj(index, el);
         return allEdges.push(edge);
       })
-      const newNodes: object[] = [];
-      await Promise.all(allIds.map(item => getNode(newNodes, item)));
-      setNodes(newNodes);
+      const newProcesses: object[] = [];
+      await Promise.all(nodeIDs.map(item => getNode(newProcesses, item)));
+      setProcesses(newProcesses);
       setEdges(allEdges);
     })
   }, [id]);
@@ -67,9 +66,9 @@ export const DataOverview: React.FC = () => {
   }
 
   return (
-    <div className="flow-chart">
-      <Dropdown flows={flows} handleChange={(e) => setId(parseInt(e.target.value))} />
-      <FlowChart nodes={nodes} edges={edges} />
+    <div className="data-overview">
+      <Dropdown options={flows} handleChange={(e) => setId(parseInt(e.target.value))} />
+      <FlowChart nodes={processes} edges={edges} />
     </div>
   );
 };

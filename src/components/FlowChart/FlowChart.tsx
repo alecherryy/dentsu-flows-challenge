@@ -1,86 +1,80 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useCallback } from 'react';
+import './styles.scss';
+
+import React from 'react';
 import ReactFlow, {
   ReactFlowProvider,
-  addEdge,
-  removeElements,
   isNode,
 } from 'react-flow-renderer';
 import dagre from 'dagre';
 
-// import initialElements from './initial-elements';
-
-// import './layouting.css';
-
-const dagreGraph = new dagre.graphlib.Graph();
-dagreGraph.setDefaultEdgeLabel(() => ({}));
-
-// In order to keep this example simple the node width and height are hardcoded.
-// In a real world app you would use the correct width and height values of
-// const nodes = useStoreState(state => state.nodes) and then node.__rf.width, node.__rf.height
-
+/**
+ * Component for duration info element.
+ *
+ * @component
+ * @return {object} (
+ *   <FlowChart handleChange={handleChange} />
+ * )
+ */
 interface Props {
   nodes: object[],
-  edges?: object[]
-}
-
-interface Props {
-  nodes: object[],
-  edges?: object[]
+  edges: object[]
 }
 export const FlowChart: React.FC<Props> = (props) => {
-  // const [elements, setElements] = useState([]);
-  // const onLayout = useCallback(
-  //   (direction) => {
-  //     const layoutedElements = ;
-  //     setElements(layoutedElements);
-  //   },
-  //   [elements]
-  // );
-
   return (
-    <div className="layoutflow">
+    <div className="flow-chart">
       <ReactFlowProvider>
-        <ReactFlow elements={getLayoutedElements(props.nodes, 'LR')} />
-        <div className="controls">
-        </div>
+        <ReactFlow elements={generateFlow(props.nodes, props.edges)} />
       </ReactFlowProvider>
     </div>
   );
 };
 
-const nodeWidth = 172;
-const nodeHeight = 36;
-const getLayoutedElements = (elements: any[], direction = 'TB') => {
-  // const isHorizontal = direction === 'LR';
-  dagreGraph.setGraph({ rankdir: direction });
+/**
+ * Create a new Dagre Graph and set direction and
+ * type of layout algorithm=.
+ */
+const Graph = new dagre.graphlib.Graph();
+Graph.setGraph({
+  rankdir: 'TB',
+  ranker: 'longest-path'
+});
+Graph.setDefaultEdgeLabel(() => ({}));
 
-  elements.forEach((el) => {
+/**
+ * Create a new Dagre Graph and set direction and
+ * type of layout algorithm.
+ */
+const NODE_WIDTH = 200;
+const NODE_HEIGHT = 50;
+const generateFlow = (nodes: object[], edges: object[]) => {
+  const elements: any[] = nodes.concat(edges);
+
+  elements.map((el: any) => {
     if (isNode(el)) {
-      dagreGraph.setNode(el.id, {
+      Graph.setNode(el.id, {
         id: el.id,
-        width: nodeWidth,
-        height: nodeHeight });
+        data: el.data,
+        width: NODE_WIDTH,
+        height: NODE_HEIGHT
+      });
+    } else {
+      Graph.setEdge(el.source, el.target);
     }
   });
 
-  dagre.layout(dagreGraph);
+  dagre.layout(Graph);
 
-  return elements.map((el) => {
+  // layout out elements on page
+  elements.map((el) => {
     if (isNode(el)) {
-      const nodeWithPosition = dagreGraph.node(el.id);
-      // el.targetPosition = isHorizontal ? 'left' : 'top';
-      // el.sourcePosition = isHorizontal ? 'right' : 'bottom';
-
-      // unfortunately we need this little hack to pass a slighltiy different position
-      // to notify react flow about the change. More over we are shifting the dagre node position
-      // (anchor=center center) to the top left so it matches the react flow node anchor point (top left).
+      const nodeWithPosition = Graph.node(el.id);
       el.position = {
-        x: nodeWithPosition.x - nodeWidth / 2 + Math.random() / 1000,
-        y: nodeWithPosition.y - nodeHeight / 2,
+        x: nodeWithPosition.x - NODE_WIDTH / 2,
+        y: nodeWithPosition.y - NODE_HEIGHT / 2,
       };
     }
-
     return el;
   });
+
+  return [...elements];
 };
