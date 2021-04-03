@@ -3,8 +3,9 @@ import './styles.scss';
 import React, { useEffect, useState } from 'react';
 
 import { API } from '../../services/FlowService';
-import { Dropdown } from '../Dropdown/Dropdown';
 import { UTILS } from '../../utils/utils';
+
+import { Dropdown } from '../Dropdown/Dropdown';
 import { FlowChart } from '../FlowChart/FlowChart';
 
 /**
@@ -22,10 +23,12 @@ export const DataOverview: React.FC = () => {
   const [id, setId] = useState(-1);
 
   useEffect(() => {
+    // temp arrays to hold fetched data
     const nodeIDs: number[] = [];
+    const allEdges: object[] = [];
+    const newProcesses: object[] = [];
 
     API.findFlowById(id).then(async (chart) => {
-      const allEdges: object[] = [];
 
       chart.map((el: any, index: number) => {
         if (!nodeIDs.includes(el.fromProcessId)) {
@@ -38,30 +41,35 @@ export const DataOverview: React.FC = () => {
         const edge = UTILS.formatObj(index, el);
         return allEdges.push(edge);
       })
-      const newProcesses: object[] = [];
       await Promise.all(nodeIDs.map(item => getNode(newProcesses, item)));
+
+      // set state variables
       setProcesses(newProcesses);
       setEdges(allEdges);
     })
   }, [id]);
 
+  // on first render, call all flows and set a default
+  // value for the ID
   useEffect(() => {
     if (id === -1) {
       API.findAllFlows().then(async (data) => {
-        setId(data[0].id);
         setFlows(data);
+        setId(data[0].id);
       });
     }
-  }, []);
+  });
 
   const getNode = async (arr: object[], id: number) => {
     const node = await API.findProcessById(id);
     const newNode = {
       id: node.id.toString(),
       data: {
-        label: node.name,
+        label: node.name
       }
     }
+
+    // push new node to param arr
     arr.push(newNode);
   }
 
