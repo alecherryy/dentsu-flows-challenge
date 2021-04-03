@@ -15,19 +15,11 @@
     content: '';
     bottom: 0;
     display: block;
-    height: 10vh;
+    height: 20vh;
     left: calc((100% - #{rem(1px)}) / 2);
     position: absolute;
     width: 1px;
     z-index: -1;
-  }
-
-  @include bp-tablet {
-
-    &::after {
-      bottom: 0;
-      height: 20vh;
-    }
   }
 }
 

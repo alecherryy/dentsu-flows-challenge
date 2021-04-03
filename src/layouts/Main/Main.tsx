@@ -12,10 +12,10 @@ import React from 'react';
  * )
  */
 
-export const Main: React.FC = (children) => {
+export const Main: React.FC = (props) => {
   return (
     <main role="main">
-      {children}
+      {props.children}
     </main>
   );
 };

@@ -3,4 +3,33 @@
 // @file
 // Footer
 
-// .footer {}
+.footer {
+  padding: $spacing-2 0 $spacing-1;
+  position: relative;
+  text-align: right;
+
+  &::after {
+    background-color: rgba(255, 255, 255, 0.30);
+    content: '';
+    display: block;
+    position: absolute;
+    z-index: -1;
+    border-radius: 100%;
+    height: 10px;
+    left: calc((100% - #{rem(10px)}) / 2);
+    position: absolute;
+    top: 0;
+    width: 10px;
+  }
+
+  @include bp-tablet {
+    padding: $spacing-4 0 $spacing-3;
+
+    &::after {
+      height: 20px;
+      left: calc((100% - #{rem(20px)}) / 2);
+      position: absolute;
+      width: 20px;
+    }
+  }
+}
