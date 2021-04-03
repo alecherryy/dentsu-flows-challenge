@@ -1,6 +1,6 @@
 import './styles.scss';
 
-import React, { createRef, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { API } from '../../services/FlowService';
 import { Constrain } from '../../layouts/Constrain/Constrain';
 import { FlowSelector } from '../FlowSelector/FlowSelector';
@@ -18,27 +18,44 @@ interface Props {
 }
 
 export const DurationInfo: React.FC<Props> = (props) => {
-  const flowRef = createRef<HTMLSelectElement>();
-  const initial: any[] = [];
-  const [flows, setFlows] = useState(initial);
+  // const initial: any[] = [];
+  const [flows, setFlows] = useState<any[] | undefined>(undefined);
+  const [processIds, setProcessIds] = useState<any[] | undefined>(undefined);
+  const [id, setId] = useState('');
 
   // populate select dropdown on inital render
   useEffect(() => {
-    // call API to populate flows
-    console.log(flowRef.current?.value);
-    const getProcesses = async () => {
-      const data = await API.findProcessByFlow(1);
-
-      setFlows(data);
+    if (id !==  null) {
+      getFlows();
     }
 
-    getProcesses();
-  }, []);
+    getFlowProcess()
+  }, [id]);
+
+  const getFlows = async () => {
+    const data = await API.findAllFlows();
+    setId(`${data[0].id}`)
+    setFlows(data);
+  }
+
+  const getFlowProcess = async () => {
+    const data = await API.findFlowById(id);
+
+    const flatArr: number[] = [];
+    data.map((proc: any) => {
+      flatArr.push(proc.fromProcessId, proc.toProcessId);
+    })
+
+    setProcessIds(flatArr);
+  }
 
   return (
     <div className="duration-comparison">
       <Constrain>
-        <FlowSelector selectRef={flowRef} />
+        <FlowSelector flows={flows} handleChange={(e) => setId(e.target.value)} />
+        {processIds?.map((item) => {
+          return <p>{item}</p>
+        })}
       </Constrain>
     </div>
   );

@@ -8,7 +8,7 @@
 const findMax = (arr) => {
   let max = arr[0];
 
-	arr.map((item) => {
+	arr.forEach((item) => {
 		if (item > max) {
       max = item
     }
@@ -27,7 +27,7 @@ const findMax = (arr) => {
 const findMin = (arr) => {
   let min = arr[0];
 
-	arr.map((item) => {
+	arr.forEach((item) => {
 		if (item < min) {
       min = item
     }
@@ -36,6 +36,52 @@ const findMin = (arr) => {
   return min;
 };
 
+/**
+ * Format object to use correct value data type.
+ *
+ * @name formatObj
+ * @param {number} index value
+ * @param {object} obj to be formatted
+ *
+ * @return {object} formatted object
+ */
+const formatObj = (index, obj) => {
+  const id = `${index}`;
+  const source = `${obj.fromProcessId}`;
+  const target = `${obj.toProcessId}`;
+
+  const formatted = {
+    id,
+    source,
+    target,
+  };
+
+  return formatted;
+};
+
+/**
+ * Format object to use correct value data type.
+ *
+ * @name formatObj
+ * @param {number} index value
+ * @param {object} obj to be formatted
+ *
+ * @return {object} formatted object
+ */
+// const createNode = (process) => {
+//   const id = `${index}`;
+//   const source = `${obj.fromProcessId}`;
+//   const target = `${obj.toProcessId}`;
+
+//   const formatted = {
+//     id,
+//     source,
+//     target,
+//   };
+
+//   return formatted;
+// };
+
 export const UTILS = {
-  findMax, findMin
+  findMax, findMin, formatObj
 }

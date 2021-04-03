@@ -1,10 +1,10 @@
 import './App.scss';
-import { DurationInfo } from './components/DurationInfo/DurationInfo';
+import { FlowChart } from './components/FlowChart/FlowChart';
 
 function App() {
   return (
     <div className="App">
-      <DurationInfo />
+      <FlowChart />
     </div>
   );
 }
