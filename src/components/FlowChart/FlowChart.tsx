@@ -2,7 +2,7 @@ import './styles.scss';
 
 import React, { useEffect, useState } from 'react';
 import ReactFlow from 'react-flow-renderer';
-// import dagre from 'dagre';
+import dagre from 'dagre';
 
 import { API } from '../../services/FlowService';
 import { Dropdown } from '../Dropdown/Dropdown';
