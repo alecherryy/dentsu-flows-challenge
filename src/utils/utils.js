@@ -49,11 +49,13 @@ const formatObj = (index, obj) => {
   const id = `${index}`;
   const source = `${obj.fromProcessId}`;
   const target = `${obj.toProcessId}`;
+  const animated = true;
 
   const formatted = {
     id,
     source,
     target,
+    animated
   };
 
   return formatted;

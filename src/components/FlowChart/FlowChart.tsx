@@ -1,12 +1,11 @@
 import './styles.scss';
 
-import React, { useEffect, useState } from 'react';
-import ReactFlow from 'react-flow-renderer';
+import React from 'react';
+import ReactFlow, {
+  ReactFlowProvider,
+  isNode,
+} from 'react-flow-renderer';
 import dagre from 'dagre';
-
-import { API } from '../../services/FlowService';
-import { Dropdown } from '../Dropdown/Dropdown';
-import { UTILS } from '../../utils/utils';
 
 /**
  * Component for duration info element.
@@ -16,54 +15,78 @@ import { UTILS } from '../../utils/utils';
  *   <FlowChart handleChange={handleChange} />
  * )
  */
-export const FlowChart: React.FC = () => {
-  const [flows, setFlows] = useState<any[] | undefined>(undefined);
-  const [data, setData] = useState<any[]>([]);
-  const [id, setId] = useState(-1);
-
-  useEffect(() => {
-    API.findAllFlows().then(async (data) => {
-      if (id === -1) {
-        setId(data[0].id);
-        setFlows(data);
-      }
-
-      API.findFlowById(id).then(async (chart) => {
-        const allIds: number[] = [];
-        const allEdges: object[] = [];
-        chart.map((el: any, index: number) => {
-          if (!allIds.includes(el.fromProcessId)) {
-            allIds.push(el.fromProcessId);
-          }
-          if (!allIds.includes(el.toProcessId)) {
-            allIds.push(el.toProcessId);
-          }
-
-          const edge = UTILS.formatObj(index, el);
-          allEdges.push(edge);
-        })
-
-        const allNodes: object[] = await Promise.all(allIds.map(item => getNode(item)));
-
-        setData(allNodes.concat(allEdges));
-      })
-    });
-  }, [id]);
-
-  const getNode = async (id: number) => {
-    const node = await API.findProcessById(id);
-    const newNode = {
-      id: node.id.toString(),
-      data: { label: node.name },
-      position: { x: 50 + (id * 100), y: 25 + (id * 100) },
-    }
-    return newNode;
-  }
-
+interface Props {
+  nodes: object[],
+  edges: object[]
+}
+export const FlowChart: React.FC<Props> = (props) => {
   return (
     <div className="flow-chart">
-      <Dropdown flows={flows} handleChange={(e) => setId(parseInt(e.target.value))} />
-      <ReactFlow elements={data} />
+      <ReactFlowProvider>
+        <ReactFlow elements={generateFlow(props.nodes, props.edges)} />
+      </ReactFlowProvider>
     </div>
   );
+};
+
+/**
+ * Create a new Dagre Graph and set direction and
+ * type of layout algorithm=.
+ */
+const Graph = new dagre.graphlib.Graph();
+Graph.setGraph({
+  rankdir: 'TB',
+  ranker: 'longest-path'
+});
+Graph.setDefaultEdgeLabel(() => ({}));
+
+/**
+ * Create a new Dagre Graph and set direction and
+ * type of layout algorithm.
+ *
+ * @function
+ * @param {arr} nodes of the graph
+ * @param {arr} edges of the graph
+ * @return {arr} containing preformatted nodes and edges objects
+ */
+// CONSTANTS
+const NODE_WIDTH = 200;
+const NODE_HEIGHT = 50;
+const generateFlow = (nodes: object[], edges: object[]) => {
+  const elements: any[] = nodes.concat(edges);
+
+  // format elements to match library requirements
+  elements.forEach((el: any) => {
+    if (isNode(el)) {
+      // add a node to the graph
+      Graph.setNode(el.id, {
+        id: el.id,
+        data: el.data,
+        width: NODE_WIDTH,
+        height: NODE_HEIGHT
+      });
+    } else {
+      // add an edge to the graph
+      Graph.setEdge(el.source, el.target);
+    }
+  });
+
+  // instantiate layout
+  dagre.layout(Graph);
+
+  // layout out elements on page
+  elements.map((el) => {
+    if (isNode(el)) {
+      const nodeWithPosition = Graph.node(el.id);
+      // update position coordinates of the node
+      el.position = {
+        x: nodeWithPosition.x - NODE_WIDTH / 2,
+        y: nodeWithPosition.y - NODE_HEIGHT / 2,
+      };
+    }
+
+    return el;
+  });
+
+  return [...elements];
 };

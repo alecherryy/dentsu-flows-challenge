@@ -1,0 +1,82 @@
+import './styles.scss';
+
+import React, { useEffect, useState } from 'react';
+
+import { API } from '../../services/FlowService';
+import { UTILS } from '../../utils/utils';
+
+import { Dropdown } from '../Dropdown/Dropdown';
+import { FlowChart } from '../FlowChart/FlowChart';
+
+/**
+ * Component for duration info element.
+ *
+ * @component
+ * @return {object} (
+ *   <DataOverview />
+ * )
+ */
+export const DataOverview: React.FC = () => {
+  const [flows, setFlows] = useState<any[]>([]);
+  const [processes, setProcesses] = useState<any[]>([]);
+  const [edges, setEdges] = useState<any[]>([]);
+  const [id, setId] = useState(-1);
+
+  useEffect(() => {
+    // temp arrays to hold fetched data
+    const nodeIDs: number[] = [];
+    const allEdges: object[] = [];
+    const newProcesses: object[] = [];
+
+    API.findFlowById(id).then(async (chart) => {
+
+      chart.map((el: any, index: number) => {
+        if (!nodeIDs.includes(el.fromProcessId)) {
+          nodeIDs.push(el.fromProcessId);
+        }
+        if (!nodeIDs.includes(el.toProcessId)) {
+          nodeIDs.push(el.toProcessId);
+        }
+
+        const edge = UTILS.formatObj(index, el);
+        return allEdges.push(edge);
+      })
+      await Promise.all(nodeIDs.map(item => getNode(newProcesses, item)));
+
+      // set state variables
+      setProcesses(newProcesses);
+      setEdges(allEdges);
+    })
+  }, [id]);
+
+  // on first render, call all flows and set a default
+  // value for the ID
+  useEffect(() => {
+    if (id === -1) {
+      API.findAllFlows().then(async (data) => {
+        setFlows(data);
+        setId(data[0].id);
+      });
+    }
+  });
+
+  const getNode = async (arr: object[], id: number) => {
+    const node = await API.findProcessById(id);
+    const newNode = {
+      id: node.id.toString(),
+      data: {
+        label: node.name
+      }
+    }
+
+    // push new node to param arr
+    arr.push(newNode);
+  }
+
+  return (
+    <div className="data-overview">
+      <Dropdown options={flows} handleChange={(e) => setId(parseInt(e.target.value))} />
+      <FlowChart nodes={processes} edges={edges} />
+    </div>
+  );
+};
