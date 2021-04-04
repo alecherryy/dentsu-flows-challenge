@@ -7,6 +7,7 @@ import { UTILS } from '../../utils/utils';
 
 import { Dropdown } from '../Dropdown/Dropdown';
 import { FlowChart } from '../FlowChart/FlowChart';
+import { Legend } from '../Legend/Legend';
 
 /**
  * Component for duration info element.
@@ -17,35 +18,47 @@ import { FlowChart } from '../FlowChart/FlowChart';
  * )
  */
 export const DataOverview: React.FC = () => {
-  const [flows, setFlows] = useState<any[]>([]);
+  const [flowIDs, setFlowIDs] = useState<any[]>([]);
   const [processes, setProcesses] = useState<any[]>([]);
-  const [edges, setEdges] = useState<any[]>([]);
+  const [flows, setEdges] = useState<any[]>([]);
   const [id, setId] = useState(-1);
 
+  // call everytime the ID is upated
   useEffect(() => {
     // temp arrays to hold fetched data
-    const nodeIDs: number[] = [];
-    const allEdges: object[] = [];
-    const newProcesses: object[] = [];
+    const processIDs: number[] = [];
+    const allFlows: any[] = [];
+    const newProcesses: any[] = [];
 
+    // get array of flows for a given ID
     API.findFlowById(id).then(async (chart) => {
 
-      chart.map((el: any, index: number) => {
-        if (!nodeIDs.includes(el.fromProcessId)) {
-          nodeIDs.push(el.fromProcessId);
-        }
-        if (!nodeIDs.includes(el.toProcessId)) {
-          nodeIDs.push(el.toProcessId);
-        }
+      chart.forEach((el: any, index: number) => {
+        // add process IDs to array, no duplicates values
+        UTILS.createArrayOfUniqueValues(processIDs, el.fromProcessId);
+        UTILS.createArrayOfUniqueValues(processIDs, el.toProcessId);
 
-        const edge = UTILS.formatObj(index, el);
-        return allEdges.push(edge);
+        const flow = UTILS.formatObj(index, el);
+
+        // add individual flow to the array
+        allFlows.push(flow);
       })
-      await Promise.all(nodeIDs.map(item => getNode(newProcesses, item)));
+
+      // get array containing process data
+      await Promise.all(processIDs.map(item => getProcess(newProcesses, item)));
+
+      // find highest avg duration
+      const max = UTILS.findMax(newProcesses);
+      const highest = newProcesses.filter(process => process.data.duration === max);
+      highest.map(el => el.data.outlier = 'MAX')
+      // find lowest avg duration
+      const min = UTILS.findMin(newProcesses);
+      const lowest = newProcesses.filter(process => process.data.duration === min);
+      lowest.map(el => el.data.outlier = 'MIN')
 
       // set state variables
       setProcesses(newProcesses);
-      setEdges(allEdges);
+      setEdges(allFlows);
     })
   }, [id]);
 
@@ -54,29 +67,33 @@ export const DataOverview: React.FC = () => {
   useEffect(() => {
     if (id === -1) {
       API.findAllFlows().then(async (data) => {
-        setFlows(data);
+        setFlowIDs(data);
         setId(data[0].id);
       });
     }
   });
 
-  const getNode = async (arr: object[], id: number) => {
+  // call API of each process and retrieve data
+  const getProcess = async (arr: object[], id: number) => {
     const node = await API.findProcessById(id);
+    // format data into node
     const newNode = {
       id: node.id.toString(),
       data: {
-        label: node.name
-      }
+        label: node.name,
+        description: node.description,
+        duration: node.avgDuration,
+      },
     }
-
-    // push new node to param arr
+    // push new node to external arr
     arr.push(newNode);
   }
 
   return (
     <div className="data-overview">
-      <Dropdown options={flows} handleChange={(e) => setId(parseInt(e.target.value))} />
-      <FlowChart nodes={processes} edges={edges} />
+      <Dropdown options={flowIDs} handleChange={(e) => setId(parseInt(e.target.value))} />
+      <Legend />
+      <FlowChart nodes={processes} edges={flows} />
     </div>
   );
 };

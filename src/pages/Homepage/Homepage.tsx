@@ -22,7 +22,7 @@ export const Homepage: React.FC = () => {
     <>
       <Section modifierClasses="section--fancy">
         <Intro eyebrow="Welcome"
-          title={<h1>Welcome. View your <span className="text-regular text-italic">
+          title={<h1>Hello, there. View your <span className="text-regular text-italic">
             data</span>, compare and more.</h1>}>
           <p>Eu case adolescens vel. Sed ex legere integre, eam feugiat partiendo
             laboramus ad. Ea errem exerci eam, reque iriure forensibus.</p>
@@ -39,7 +39,7 @@ export const Homepage: React.FC = () => {
               reque iriure forensibus</a>.
           </p>
         </Intro>
-        <Constrain>
+        <Constrain modifierClasses="">
           <DataOverview />
         </Constrain>
       </Section>

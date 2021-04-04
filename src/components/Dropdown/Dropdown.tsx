@@ -3,7 +3,7 @@ import './styles.scss';
 import React from 'react';
 
 /**
- * Component for flow selector element.
+ * Component for dropdown element.
  *
  * @component
  * @param {function} handleChange on the component.
@@ -22,7 +22,7 @@ export const Dropdown: React.FC<Props> = (props) => {
     <div className="dropdown">
       <label className="dropdown__label">Choose a flow:</label>
       <select className="dropdown__select" onChange={props.handleChange}>
-        {props.options && props.options.map((item, key) => (
+        {props.options?.map((item, key) => (
           <option key={key} value={item.id}>
             {item.name}
           </option>

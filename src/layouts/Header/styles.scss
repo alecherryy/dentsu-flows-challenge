@@ -4,12 +4,13 @@
 // Header
 
 .header {
+  background-image: $gradient-blue;
   padding: $spacing-2 0;
   left: 0;
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 4;
+  z-index: 99;
 
 }
 

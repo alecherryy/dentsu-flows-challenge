@@ -6,15 +6,17 @@
  * @return {integer} max value
  */
 const findMax = (arr) => {
-  let max = arr[0];
+  if (arr.length !== 0) {
+    let max = arr[0].data.duration;
 
-	arr.forEach((item) => {
-		if (item > max) {
-      max = item
-    }
-  })
+    arr.forEach((item) => {
+      if (item.data.duration > max) {
+        max = item.data.duration
+      }
+    })
 
-  return max;
+    return max;
+  }
 };
 
 /**
@@ -25,15 +27,16 @@ const findMax = (arr) => {
  * @return {integer} max value
  */
 const findMin = (arr) => {
-  let min = arr[0];
+  if (arr.length !== 0) {
+    let min = arr[0].data.duration;
 
-	arr.forEach((item) => {
-		if (item < min) {
-      min = item
-    }
-  })
-
-  return min;
+    arr.forEach((item) => {
+      if (item.data.duration < min) {
+        min = item.data.duration
+      }
+    })
+    return min;
+  }
 };
 
 /**
@@ -65,25 +68,15 @@ const formatObj = (index, obj) => {
  * Format object to use correct value data type.
  *
  * @name formatObj
- * @param {number} index value
- * @param {object} obj to be formatted
- *
- * @return {object} formatted object
+ * @param {array} arr parameter
+ * @param {number} num to be added to the array
  */
-// const createNode = (process) => {
-//   const id = `${index}`;
-//   const source = `${obj.fromProcessId}`;
-//   const target = `${obj.toProcessId}`;
-
-//   const formatted = {
-//     id,
-//     source,
-//     target,
-//   };
-
-//   return formatted;
-// };
+const createArrayOfUniqueValues = (arr, num) => {
+  if (!arr.includes(num)) {
+    arr.push(num);
+  }
+};
 
 export const UTILS = {
-  findMax, findMin, formatObj
+  findMax, findMin, formatObj, createArrayOfUniqueValues
 }

@@ -1,0 +1,57 @@
+@import '../../scss/variables.scss';
+
+// @file
+// Legend
+
+.legend {
+  @include list-clean();
+
+  color: $white;
+  font-size: $font-size-sm;
+  margin: 0 0 $spacing-1;
+
+  @include bp-tablet {
+    @include list-inline();
+
+    margin: 0 0 $spacing-3;
+    text-align: right;
+  }
+}
+
+.legend__item {
+  padding-left: $spacing-3 !important;
+  position: relative;
+
+  &:not(:last-child) {
+    margin-right: $spacing-3;
+  }
+
+  &::after {
+    border-radius: 20px;
+    display: block;
+    content: '';
+    height: 5px;
+    left: 0;
+    position: absolute;
+    top: calc((100% - 5px) / 2);
+    width: 20px;
+  }
+}
+
+.legend__item--highest {
+  &::after {
+    background-color: $magenta;
+  }
+}
+
+.legend__item--lowest {
+  &::after {
+    background-color: $yellow;
+  }
+}
+
+.legend__item--flow {
+  &::after {
+    border: dashed 1px $orange;
+  }
+}

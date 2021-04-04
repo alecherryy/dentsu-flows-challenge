@@ -1,0 +1,51 @@
+@import '../../scss/variables.scss';
+
+// @file
+// Custom Node
+
+.custom-node {
+  // background-color: rgba(0, 0, 0, 0.2);
+  background-color: #08061D;
+  border: solid 1px $white;
+  font-size: $font-size-sm;
+  color: $gray-3;
+  padding: $spacing-2;
+  text-align: left;
+
+  &[data-outlier='MAX'] {
+    border-color: $magenta;
+  }
+
+  &[data-outlier='MIN'] {
+    border-color: $yellow;
+  }
+
+  .custom-node__handle {
+    background-color: $white;
+  }
+}
+
+.custom-node__title {
+  text-align: center;
+}
+
+.custom-node__dur {
+  margin: 0;
+  text-align: center;
+
+  [data-outlier='MAX'] & {
+    color: $magenta;
+  }
+
+  [data-outlier='MIN'] & {
+    color: $yellow;
+  }
+}
+
+.custom-node__label {
+  color: $white;
+  display: inline-block;
+  font-weight: 700;
+  padding-right: $spacing-1;
+  text-transform: uppercase;
+}
