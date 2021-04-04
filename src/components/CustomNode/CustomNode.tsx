@@ -4,9 +4,18 @@ import React from 'react';
 
 import { Handle, Position } from 'react-flow-renderer';
 
+/**
+ * Component for custom node element.
+ *
+ * @component
+ * @return {object} (
+ *   <CustomNode data={data} />
+ * )
+ */
 interface Props {
   data: any,
 }
+
 export const CustomNode: React.FC<Props> = (props) => {
   return (
     <div className="custom-node" data-outlier={props.data.outlier}>

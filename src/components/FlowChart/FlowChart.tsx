@@ -46,16 +46,21 @@ export const FlowChart: React.FC<Props> = (props) => {
 };
 
 /**
- * Create a new Dagre Graph and set direction and
- * type of layout algorithm.
+ * Call this function to generate a new Dagre Graph.
+ *
+ * @function
+ * @return {Object} new Dagre Graph
  */
 const generateGraph = () => {
+  // instantiate new dagre graph
   const Graph = new dagre.graphlib.Graph();
+  // hard coded direction and layout agorithm
   Graph.setGraph({
     rankdir: 'TB',
     ranker: 'longest-path'
   });
   Graph.setDefaultEdgeLabel(() => ({}));
+
   return Graph;
 }
 
@@ -72,10 +77,12 @@ const generateGraph = () => {
 const NODE_WIDTH = 300;
 const NODE_HEIGHT = 150;
 const generateFlow = (nodes: object[], edges: object[]) => {
+  // create new graph
   const Graph = generateGraph();
+  // combine nodes and edges into a single array
   const elements: any[] = nodes.concat(edges);
 
-  // format elements to match library requirements
+  // format nodes and set nodes on the graph
   elements.forEach((el: any) => {
     if (isNode(el)) {
       // add a node to the graph
@@ -97,11 +104,12 @@ const generateFlow = (nodes: object[], edges: object[]) => {
   // layout out elements on page
   elements.map((el) => {
     if (isNode(el)) {
-      const nodeWithPosition = Graph.node(el.id);
+      const nodeCoordinates = Graph.node(el.id);
       // update position coordinates of the node
+      // using hard coded width and height for time purposes
       el.position = {
-        x: nodeWithPosition.x - NODE_WIDTH / 2,
-        y: nodeWithPosition.y - NODE_HEIGHT / 2,
+        x: nodeCoordinates.x - NODE_WIDTH / 2,
+        y: nodeCoordinates.y - NODE_HEIGHT / 2,
       };
     }
 

@@ -13,6 +13,7 @@
   }
 
   // Override react-flow-render styles
+  // quick way to updadte look & feel
   .react-flow__node {
     background-color: transparent;
     color: $white;
@@ -22,6 +23,6 @@
   }
 
   .react-flow__edge-path {
-    stroke: rgba(255, 255, 255, 0.3);
+    stroke: rgba(255,170,113, 0.5);
   }
 }

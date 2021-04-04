@@ -39,7 +39,7 @@ export const Homepage: React.FC = () => {
               reque iriure forensibus</a>.
           </p>
         </Intro>
-        <Constrain>
+        <Constrain modifierClasses="">
           <DataOverview />
         </Constrain>
       </Section>

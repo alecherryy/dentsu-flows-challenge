@@ -43,13 +43,9 @@
 }
 
 .custom-node__label {
+  color: $white;
   display: inline-block;
   font-weight: 700;
   padding-right: $spacing-1;
   text-transform: uppercase;
-
-  [data-outlier='MAX'] &,
-  [data-outlier='MIN'] & {
-    color: $white;
-  }
 }

@@ -68,25 +68,15 @@ const formatObj = (index, obj) => {
  * Format object to use correct value data type.
  *
  * @name formatObj
- * @param {number} index value
- * @param {object} obj to be formatted
- *
- * @return {object} formatted object
+ * @param {array} arr parameter
+ * @param {number} num to be added to the array
  */
-// const createNode = (process) => {
-//   const id = `${index}`;
-//   const source = `${obj.fromProcessId}`;
-//   const target = `${obj.toProcessId}`;
-
-//   const formatted = {
-//     id,
-//     source,
-//     target,
-//   };
-
-//   return formatted;
-// };
+const createArrayOfUniqueValues = (arr, num) => {
+  if (!arr.includes(num)) {
+    arr.push(num);
+  }
+};
 
 export const UTILS = {
-  findMax, findMin, formatObj
+  findMax, findMin, formatObj, createArrayOfUniqueValues
 }
