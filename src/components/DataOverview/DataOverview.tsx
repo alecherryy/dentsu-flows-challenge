@@ -25,8 +25,8 @@ export const DataOverview: React.FC = () => {
   useEffect(() => {
     // temp arrays to hold fetched data
     const nodeIDs: number[] = [];
-    const allEdges: object[] = [];
-    const newProcesses: object[] = [];
+    const allEdges: any[] = [];
+    const newProcesses: any[] = [];
 
     API.findFlowById(id).then(async (chart) => {
 
@@ -42,6 +42,13 @@ export const DataOverview: React.FC = () => {
         return allEdges.push(edge);
       })
       await Promise.all(nodeIDs.map(item => getNode(newProcesses, item)));
+
+      const max = UTILS.findMax(newProcesses);
+      const highest = newProcesses.filter(process => process.data.duration === max);
+      highest.map(el => el.data.outlier = 'MAX')
+      const min = UTILS.findMin(newProcesses);
+      const lowest = newProcesses.filter(process => process.data.duration === min);
+      lowest.map(el => el.data.outlier = 'MIN')
 
       // set state variables
       setProcesses(newProcesses);
@@ -65,10 +72,11 @@ export const DataOverview: React.FC = () => {
     const newNode = {
       id: node.id.toString(),
       data: {
-        label: node.name
-      }
+        label: node.name,
+        description: node.description,
+        duration: node.avgDuration,
+      },
     }
-
     // push new node to param arr
     arr.push(newNode);
   }

@@ -4,8 +4,10 @@ import React from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   isNode,
+  Controls,
 } from 'react-flow-renderer';
 import dagre from 'dagre';
+import { CustomNode } from '../CustomNode/CustomNode';
 
 /**
  * Component for duration info element.
@@ -20,13 +22,24 @@ interface Props {
   edges: object[]
 }
 export const FlowChart: React.FC<Props> = (props) => {
+  const onLoad = (instance: any) => {
+    instance.fitView();
+  }
+
+  const specialNodeTypes = {
+    default: CustomNode,
+  };
+
   return (
     <div className="flow-chart">
       <ReactFlowProvider>
         <ReactFlow
+          nodeTypes={specialNodeTypes}
+          onLoad={onLoad}
           zoomOnScroll={false}
-          elements={generateFlow(props.nodes, props.edges)}
-        />
+          elements={generateFlow(props.nodes, props.edges)}>
+          <Controls />
+        </ReactFlow>
       </ReactFlowProvider>
     </div>
   );
@@ -34,14 +47,17 @@ export const FlowChart: React.FC<Props> = (props) => {
 
 /**
  * Create a new Dagre Graph and set direction and
- * type of layout algorithm=.
+ * type of layout algorithm.
  */
-const Graph = new dagre.graphlib.Graph();
-Graph.setGraph({
-  rankdir: 'TB',
-  ranker: 'longest-path'
-});
-Graph.setDefaultEdgeLabel(() => ({}));
+const generateGraph = () => {
+  const Graph = new dagre.graphlib.Graph();
+  Graph.setGraph({
+    rankdir: 'TB',
+    ranker: 'longest-path'
+  });
+  Graph.setDefaultEdgeLabel(() => ({}));
+  return Graph;
+}
 
 /**
  * Create a new Dagre Graph and set direction and
@@ -53,9 +69,10 @@ Graph.setDefaultEdgeLabel(() => ({}));
  * @return {arr} containing preformatted nodes and edges objects
  */
 // CONSTANTS
-const NODE_WIDTH = 200;
-const NODE_HEIGHT = 50;
+const NODE_WIDTH = 300;
+const NODE_HEIGHT = 150;
 const generateFlow = (nodes: object[], edges: object[]) => {
+  const Graph = generateGraph();
   const elements: any[] = nodes.concat(edges);
 
   // format elements to match library requirements

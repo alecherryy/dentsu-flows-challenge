@@ -4,9 +4,24 @@
 // Flow chart
 
 .flow-chart {
+  background-color: $blue-dark;
+  border: 1px solid $blue-light;
   height: rem(600px);
 
   * {
     transition: none; // disable to avoid flow chart conflicts
+  }
+
+  // Override react-flow-render styles
+  .react-flow__node {
+    background-color: transparent;
+    color: $white;
+    border: 0;
+    padding: 0;
+    width: auto;
+  }
+
+  .react-flow__edge-path {
+    stroke: rgba(255, 255, 255, 0.3);
   }
 }
