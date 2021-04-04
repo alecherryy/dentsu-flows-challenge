@@ -25,7 +25,7 @@ export const Team: React.FC = () => {
       <Section>
         <Intro eyebrow="The Team"
           title={<h1>Mee the <span className="text-regular text-italic">
-            developer</span> who built this application.</h1>}>
+            developer</span> who built this application</h1>}>
           <p>It's me, Alessia Pizzoccheri, to showcase
             my design and coding capabilities as part of the recruitement process
             for Dentsu International.

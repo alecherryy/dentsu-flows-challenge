@@ -76,8 +76,8 @@ const generateGraph = () => {
  */
 // CONSTANTS
 const generateFlowchart = (nodes: object[], edges: object[]) => {
-  const NODE_WIDTH = 300;
-  const NODE_HEIGHT = 150;
+  const NODE_WIDTH = 315;
+  const NODE_HEIGHT = 140;
   // create new graph
   const Graph = generateGraph();
   // combine nodes and edges into a single array
@@ -86,6 +86,7 @@ const generateFlowchart = (nodes: object[], edges: object[]) => {
   // format nodes and set nodes on the graph
   elements.forEach((el: any) => {
     if (isNode(el)) {
+      console.log(el);
       // add a node to the graph
       Graph.setNode(el.id, {
         id: el.id,
