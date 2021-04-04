@@ -26,6 +26,7 @@ export const FlowChart: React.FC<Props> = (props) => {
     instance.fitView();
   }
 
+  // set custom node to be default node
   const specialNodeTypes = {
     default: CustomNode,
   };
@@ -37,7 +38,7 @@ export const FlowChart: React.FC<Props> = (props) => {
           nodeTypes={specialNodeTypes}
           onLoad={onLoad}
           zoomOnScroll={false}
-          elements={generateFlow(props.nodes, props.edges)}>
+          elements={generateFlowchart(props.nodes, props.edges)}>
           <Controls />
         </ReactFlow>
       </ReactFlowProvider>
@@ -57,7 +58,7 @@ const generateGraph = () => {
   // hard coded direction and layout agorithm
   Graph.setGraph({
     rankdir: 'TB',
-    ranker: 'longest-path'
+    ranker: 'longest-path', // additional options: network-simplex and tight-tree
   });
   Graph.setDefaultEdgeLabel(() => ({}));
 
@@ -74,9 +75,9 @@ const generateGraph = () => {
  * @return {arr} containing preformatted nodes and edges objects
  */
 // CONSTANTS
-const NODE_WIDTH = 300;
-const NODE_HEIGHT = 150;
-const generateFlow = (nodes: object[], edges: object[]) => {
+const generateFlowchart = (nodes: object[], edges: object[]) => {
+  const NODE_WIDTH = 300;
+  const NODE_HEIGHT = 150;
   // create new graph
   const Graph = generateGraph();
   // combine nodes and edges into a single array
