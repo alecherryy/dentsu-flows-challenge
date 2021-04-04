@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { DataOverview } from '../../components/DataOverview/DataOverview';
 import { Section } from '../../components/Section/Section';
@@ -7,22 +7,17 @@ import { Constrain } from '../../layouts/Constrain/Constrain';
 import Data from '../../images/data.svg';
 import Flow from '../../images/flow.svg';
 import { Graphic } from '../../components/Graphic/Graphic';
-import { UTILS } from '../../utils/utils';
 
 /**
  * Component for the homepage.
  *
  * @component
  * @return {object} (
- *   <Homepage />
+ *   <About />
  * )
  */
 
-export const Homepage: React.FC = () => {
-  useEffect(() => {
-    UTILS.scrollTop();
-  }, [])
-
+export const About: React.FC = () => {
   return (
     <>
       <Section modifierClasses="section--fancy">

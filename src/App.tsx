@@ -8,6 +8,8 @@ import { Homepage } from './pages/Homepage/Homepage';
 import { Navigation } from './components/Navigation/Navigation';
 import { Footer } from './layouts/Footer/Footer';
 import { Constrain } from './layouts/Constrain/Constrain';
+import { Team } from './pages/Team/Team';
+import { About } from './pages/About/About';
 
 
 function App() {
@@ -19,6 +21,12 @@ function App() {
           <Switch>
             <Route exact path="/">
               <Homepage />
+            </Route>
+            <Route exact path="/team">
+              <Team />
+            </Route>
+            <Route exact path="/about">
+              <About />
             </Route>
           </Switch>
         </Main>

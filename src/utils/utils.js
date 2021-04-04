@@ -77,6 +77,24 @@ const createArrayOfUniqueValues = (arr, num) => {
   }
 };
 
+/**
+ * Format object to use correct value data type.
+ *
+ * @name formatObj
+ * @param {array} arr parameter
+ * @param {number} num to be added to the array
+ */
+const scrollTop = () => {
+  window.setTimeout(function() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, 0);
+};
+
+
+
 export const UTILS = {
-  findMax, findMin, formatObj, createArrayOfUniqueValues
+  findMax, findMin, formatObj, createArrayOfUniqueValues, scrollTop
 }
