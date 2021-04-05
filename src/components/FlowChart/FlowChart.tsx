@@ -1,6 +1,6 @@
 import './styles.scss';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   isNode,
@@ -8,6 +8,8 @@ import ReactFlow, {
 } from 'react-flow-renderer';
 import dagre from 'dagre';
 import { CustomNode } from '../CustomNode/CustomNode';
+import { UTILS } from '../../utils/utils';
+import { API } from '../../services/FlowService';
 
 /**
  * Component for duration info element.
@@ -18,12 +20,52 @@ import { CustomNode } from '../CustomNode/CustomNode';
  * )
  */
 interface Props {
-  nodes: object[],
+  nodes: number[],
   edges: object[]
 }
 export const FlowChart: React.FC<Props> = (props) => {
+  const [nodes , setNodes] = useState<any[]>([]);
+  const [elements, setElements] = useState<any[]>([]);
+
+  // set elements once nodes are updated
+  useEffect(() => {
+    setElements(generateFlowchart(nodes, props.edges))
+  }, [nodes]);
+
+  useEffect(() => {
+    getNodes();
+  }, [props.nodes]);
+
+
+  // get nodes to be rendered
+  const getNodes = async () => {
+    const nodes: any[] = [];
+
+    await Promise.all(props.nodes.map(item => getSingleNode(nodes, item)));
+
+    // find highest avg duration
+    const max = UTILS.findMax(nodes);
+    const highest = nodes.filter(node => node.data.duration === max);
+    highest.map(el => el.data.outlier = 'MAX')
+    // find lowest avg duration
+    const min = UTILS.findMin(nodes);
+    const lowest = nodes.filter(node => node.data.duration === min);
+    lowest.map(el => el.data.outlier = 'MIN')
+
+    // set state variables
+    setNodes(nodes);
+  };
+
+  // call API of each node and retrieve data
+  const getSingleNode = async (arr: object[], id: number) => {
+    const node = await API.findProcessById(id);
+    // format data into node
+    const newNode = UTILS.formatProcessObj(node);
+    // push new node to external arr
+    arr.push(newNode);
+  }
+
   const onLoad = (instance: any) => {
-    console.log('I am here')
     instance.fitView();
   }
 
@@ -39,7 +81,7 @@ export const FlowChart: React.FC<Props> = (props) => {
           nodeTypes={specialNodeTypes}
           onLoad={onLoad}
           zoomOnScroll={false}
-          elements={generateFlowchart(props.nodes, props.edges)}>
+          elements={elements}>
           <Controls />
         </ReactFlow>
       </ReactFlowProvider>
@@ -87,7 +129,6 @@ const generateFlowchart = (nodes: object[], edges: object[]) => {
   // format nodes and set nodes on the graph
   elements.forEach((el: any) => {
     if (isNode(el)) {
-      console.log(el);
       // add a node to the graph
       Graph.setNode(el.id, {
         id: el.id,
