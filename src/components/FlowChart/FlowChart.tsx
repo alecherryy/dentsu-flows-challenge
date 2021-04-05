@@ -23,6 +23,7 @@ interface Props {
 }
 export const FlowChart: React.FC<Props> = (props) => {
   const onLoad = (instance: any) => {
+    console.log('I am here')
     instance.fitView();
   }
 
