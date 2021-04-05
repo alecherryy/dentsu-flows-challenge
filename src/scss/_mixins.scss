@@ -72,7 +72,7 @@
     position: relative;
 
     &::before {
-      color: $magenta;
+      color: $blue-light;
       content: counter(custom-counter) '.';
       font-weight: 700;
       left: 0;

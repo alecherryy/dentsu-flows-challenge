@@ -40,15 +40,15 @@ const findMin = (arr) => {
 };
 
 /**
- * Format object to use correct value data type.
+ * Format flow object to use correct data type.
  *
- * @name formatObj
+ * @name formatFlowObj
  * @param {number} index value
  * @param {object} obj to be formatted
  *
  * @return {object} formatted object
  */
-const formatObj = (index, obj) => {
+const formatFlowObj = (index, obj) => {
   const id = `${index}`;
   const source = `${obj.fromProcessId}`;
   const target = `${obj.toProcessId}`;
@@ -65,9 +65,33 @@ const formatObj = (index, obj) => {
 };
 
 /**
+ * Format process object to use correct value data type.
+ *
+ * @name formatFlowObj
+ * @param {number} index value
+ * @param {object} obj to be formatted
+ *
+ * @return {object} formatted object
+ */
+const formatProcessObj = (obj) => {
+  const id = `${obj.id}`;
+
+  const formatted = {
+    id,
+    data: {
+      label: obj.name,
+      description: obj.description,
+      duration: obj.avgDuration,
+    },
+  };
+
+  return formatted;
+};
+
+/**
  * Format object to use correct value data type.
  *
- * @name formatObj
+ * @name formatFlowObj
  * @param {array} arr parameter
  * @param {number} num to be added to the array
  */
@@ -77,6 +101,29 @@ const createArrayOfUniqueValues = (arr, num) => {
   }
 };
 
+/**
+ * Format object to use correct value data type.
+ *
+ * @name formatFlowObj
+ * @param {array} arr parameter
+ * @param {number} num to be added to the array
+ */
+const scrollTop = () => {
+  window.setTimeout(function() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, 0);
+};
+
+
+
 export const UTILS = {
-  findMax, findMin, formatObj, createArrayOfUniqueValues
+  findMax,
+  findMin,
+  formatFlowObj,
+  formatProcessObj,
+  createArrayOfUniqueValues,
+  scrollTop,
 }

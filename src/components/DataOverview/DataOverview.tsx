@@ -38,7 +38,7 @@ export const DataOverview: React.FC = () => {
         UTILS.createArrayOfUniqueValues(processIDs, el.fromProcessId);
         UTILS.createArrayOfUniqueValues(processIDs, el.toProcessId);
 
-        const flow = UTILS.formatObj(index, el);
+        const flow = UTILS.formatFlowObj(index, el);
 
         // add individual flow to the array
         allFlows.push(flow);
@@ -77,14 +77,7 @@ export const DataOverview: React.FC = () => {
   const getProcess = async (arr: object[], id: number) => {
     const node = await API.findProcessById(id);
     // format data into node
-    const newNode = {
-      id: node.id.toString(),
-      data: {
-        label: node.name,
-        description: node.description,
-        duration: node.avgDuration,
-      },
-    }
+    const newNode = UTILS.formatProcessObj(node);
     // push new node to external arr
     arr.push(newNode);
   }
